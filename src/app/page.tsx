@@ -8,7 +8,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 const App = () => {
-  const [search, setSearch] = useState("margarita");
+  const [inputText, setInputText] = useState("margarita");
+  const [searchTerm, setSearchTerm] = useState("margarita");
   const [cocktails, setCocktails] = useState<CocktailType[]>([]);
   const [error, setError] = useState<string|null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -16,20 +17,20 @@ const App = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (!search.trim()) {
+    if (!searchTerm.trim()) {
       setCocktails([]);
       return;
     }
     
     setLoading(true);
-    api.get(`search.php?s=${search}`).then((e) => {
+    api.get(`search.php?s=${searchTerm}`).then((e) => {
       setCocktails(e.data.drinks || []);
     }).catch((e) => {
       setError(`Error cargando los datos: ${e.message ? e.message : e}`);
     }).finally(() => {
       setLoading(false);
     });
-  }, [search]);
+  }, [searchTerm]);
 
   const cocktailAleatorio = async () => {
     try {
@@ -43,6 +44,10 @@ const App = () => {
     }
   };
 
+  const ejecutarBusqueda = () => {
+    setSearchTerm(inputText);
+  };
+
   return (
     <div className="mainContainer">
       <div className="controlesContainer">
@@ -52,10 +57,13 @@ const App = () => {
         <input
           type="text"
           placeholder="Busca un cocktail..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          value={inputText}
+          onChange={(e) => setInputText(e.target.value)}
           className="buscadorInput"
         />
+        <button className="BotonBuscar" onClick={ejecutarBusqueda}>
+          Buscar
+        </button>
       </div>
 
       {loading && <h1>Loading...</h1>}

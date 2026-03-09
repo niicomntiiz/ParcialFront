@@ -41,7 +41,7 @@ const Page = () => {
       <h3>Categoría:</h3>
       <p>{cocktail.strCategory}</p>
 
-      <h3>Alcohólico</h3>
+      <h3>Alcohólico:</h3>
       <p>{cocktail.strAlcoholic}</p>
 
       <h3>Vaso necesario:</h3>
