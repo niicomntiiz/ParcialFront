@@ -1,66 +1,62 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client"
+import { useEffect, useState } from "react";
+import type { Cocktail as CocktailType } from "./types/cocktails";
+import { api } from "../lib/api/api";
 
-export default function Home() {
+import { Cocktail } from "./components/cocktail"; 
+import "./page.css"
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+
+const App = () => {
+  const [search, setSearch] = useState("margarita");
+  const [cocktails, setCocktails] = useState<CocktailType[]>([]);
+  const [error, setError] = useState<string|null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    setLoading(true);
+    api.get(`search.php?s=${search}`).then((e) => {
+      setCocktails(e.data.drinks || []);
+    }).catch((e) => {
+      setError(`Error cargando los datos: ${e.message ? e.message : e}`);
+    }).finally(() => {
+      setLoading(false);
+    });
+  }, [search]);
+
+  const cocktailAleatorio = async () => {
+    try {
+      const res = await api.get("random.php");
+      if (res.data.drinks && res.data.drinks.length > 0) {
+        const randomId = res.data.drinks[0].idDrink;
+        router.push(`/pagCocktail/${randomId}`);
+      }
+    } catch (err) {
+      console.error("Error obteniendo el cocktail aleatorio", err);
+    }
+  };
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+    <div className="mainContainer">
+      <button className="BotonAleatorio" onClick={cocktailAleatorio}>
+        Dime algo bonito
+      </button>
+
+      {loading && <h1>Loading...</h1>}
+      {error && <h2>{error}</h2>}
+      
+      <div className="charactersContainer">
+        {!loading && cocktails.map((c) => (
+          <Link key={c.idDrink} href={`/pagCocktail/${c.idDrink}`}>
+            <Cocktail cocktail={c} />
+          </Link>
+        ))}
+      </div>
     </div>
   );
-}
+};
+
+export default App;

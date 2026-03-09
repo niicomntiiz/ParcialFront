@@ -1,0 +1,44 @@
+"use client"
+import { useEffect, useState } from "react";
+import type { Cocktail } from "./types/cocktails";
+import { api } from "../lib/api/api";
+import { CocktailR } from "./components/cocktail";
+import "./page.css"
+import Link from "next/link";
+
+const App = () => {
+  const [search, setSearch] = useState("");
+  const [cocktails, setCocktails] = useState<Cocktail[]>([]);
+  const [inputText, setInputText] = useState<string>("");
+  const [error, setError] = useState<string|null>(null)
+  const [loading, setLoading] = useState<boolean>(true)
+
+  useEffect(() => {
+    search && api.get(`search.php?s=${search}`).then((e)=>{
+      setCocktails(e.data.drinks || []);
+    }).catch((e)=>{
+      setError(`Error cargando los datos: ${e.message ? e.message : e}`)
+    }).finally(()=>{
+      setLoading(false)
+    })
+  }, [search]);
+
+  return (
+    <div className="mainContainer">
+      <input className="Buscador" type="text" onChange={(e)=>{setInputText(e.target.value)}}/>
+      <button className="Buscador" onClick={()=>{setSearch(inputText)}}>Buscar</button>
+      {search && loading && <h1>Loading...</h1>}
+      {error && <h2>{error}</h2>}
+      <div className="charactersContainer">
+        {cocktails.map((c) => (
+          <Link key={c.idDrink} href={`/pagCocktail/${c.idDrink}`}>
+            <CocktailR cocktail={c} />
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default App;
+

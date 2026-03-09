@@ -1,0 +1,25 @@
+.characterContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  border: 2px solid grey;
+  border-radius: 6px;
+  margin-bottom: 12px;
+}
+
+.characterContainer img {
+  border-radius: 6px;
+  width: 150px;
+  height: auto;
+  box-shadow: 2px 2px 5px #fabada;
+}
+
+.characterDataContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-left: 8px;
+}
