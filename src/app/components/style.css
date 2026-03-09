@@ -1,18 +1,20 @@
 .characterContainer {
   display: flex;
-  flex-direction: row;
-  gap: 20px;
+  flex-direction: column;
+  gap: 12px;
   align-items: center;
-  justify-content: center;
-  padding: 6px;
+  justify-content: flex-start;
+  padding: 16px;
   border: 2px solid grey;
-  border-radius: 6px;
-  margin-bottom: 12px;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  margin-bottom: 0;
 }
 
 .characterContainer img {
   border-radius: 6px;
-  width: 150px;
+  width: 100%;
+  max-width: 180px;
   height: auto;
   box-shadow: 2px 2px 5px #fabada;
 }
@@ -21,5 +23,7 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding-left: 8px;
+  width: 100%;
+  text-align: center;
+  word-wrap: break-word;
 }

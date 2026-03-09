@@ -8,7 +8,9 @@
 .BotonAleatorio {
   height: 50px;
   width: 250px;
+  border-radius: 8px;
   background-color: white;
+  gap: 8px;
 }
 
 .cocktailsContainer {

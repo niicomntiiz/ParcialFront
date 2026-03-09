@@ -48,7 +48,7 @@ const App = () => {
       {loading && <h1>Loading...</h1>}
       {error && <h2>{error}</h2>}
       
-      <div className="charactersContainer">
+      <div className="cocktailsContainer">
         {!loading && cocktails.map((c) => (
           <Link key={c.idDrink} href={`/pagCocktail/${c.idDrink}`}>
             <Cocktail cocktail={c} />
