@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 
 const App = () => {
   const [inputText, setInputText] = useState("margarita");
-  const [searchTerm, setSearchTerm] = useState("margarita");
+  const [search, setSearch] = useState("margarita");
   const [cocktails, setCocktails] = useState<CocktailType[]>([]);
   const [error, setError] = useState<string|null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -17,20 +17,20 @@ const App = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (!searchTerm.trim()) {
+    if (!search.trim()) {
       setCocktails([]);
       return;
     }
     
     setLoading(true);
-    api.get(`search.php?s=${searchTerm}`).then((e) => {
+    api.get(`search.php?s=${search}`).then((e) => {
       setCocktails(e.data.drinks || []);
     }).catch((e) => {
       setError(`Error cargando los datos: ${e.message ? e.message : e}`);
     }).finally(() => {
       setLoading(false);
     });
-  }, [searchTerm]);
+  }, [search]);
 
   const cocktailAleatorio = async () => {
     try {
@@ -45,7 +45,7 @@ const App = () => {
   };
 
   const ejecutarBusqueda = () => {
-    setSearchTerm(inputText);
+    setSearch(inputText);
   };
 
   return (
