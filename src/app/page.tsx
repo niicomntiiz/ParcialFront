@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import type { Cocktail as CocktailType } from "./types/cocktails";
 import { api } from "../lib/api/api";
-
 import { Cocktail } from "./components/cocktail"; 
 import "./page.css"
 import Link from "next/link";
@@ -17,6 +16,11 @@ const App = () => {
   const router = useRouter();
 
   useEffect(() => {
+    if (!search.trim()) {
+      setCocktails([]);
+      return;
+    }
+    
     setLoading(true);
     api.get(`search.php?s=${search}`).then((e) => {
       setCocktails(e.data.drinks || []);
@@ -35,15 +39,24 @@ const App = () => {
         router.push(`/pagCocktail/${randomId}`);
       }
     } catch (err) {
-      console.error("Error obteniendo el cocktail aleatorio", err);
+      console.error(err);
     }
   };
 
   return (
     <div className="mainContainer">
-      <button className="BotonAleatorio" onClick={cocktailAleatorio}>
-        <h1>Dime algo bonito</h1>
-      </button>
+      <div className="controlesContainer">
+        <button className="BotonAleatorio" onClick={cocktailAleatorio}>
+          <h1>Dime algo bonito</h1>
+        </button>
+        <input
+          type="text"
+          placeholder="Busca un cocktail..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="buscadorInput"
+        />
+      </div>
 
       {loading && <h1>Loading...</h1>}
       {error && <h2>{error}</h2>}
