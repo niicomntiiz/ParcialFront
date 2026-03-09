@@ -42,7 +42,7 @@ const App = () => {
   return (
     <div className="mainContainer">
       <button className="BotonAleatorio" onClick={cocktailAleatorio}>
-        Dime algo bonito
+        <h1>Dime algo bonito</h1>
       </button>
 
       {loading && <h1>Loading...</h1>}

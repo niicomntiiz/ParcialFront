@@ -32,9 +32,7 @@ export const Cocktail = ({ id, cocktail: paramCocktail }: CocktailProps) => {
     <div className="characterContainer">    
         <img src={cocktail.strDrinkThumb} alt={cocktail.strDrink} />
       <div className="characterDataContainer">
-        <p><strong>Nombre:</strong> {cocktail.strDrink}</p>
-        <p><strong>Alcoholic:</strong> {cocktail.strAlcoholic}</p>
-        <p><strong>Tags:</strong> {cocktail.strTags}</p>
+        <h2>{cocktail.strDrink}</h2>
       </div>
     </div>
   );

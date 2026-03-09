@@ -51,11 +51,11 @@ const Page = () => {
       <p>{cocktail.strInstructions}</p> 
 
       <h2>Ingredientes</h2>
-      <p>
+      <ul>
         {validIngredients.map((ing, index) => (
           <li key={index}>{ing}</li>
         ))}
-      </p>
+      </ul>
     </div>
   );
 };
